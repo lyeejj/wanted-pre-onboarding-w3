@@ -1,0 +1,25 @@
+{
+	//이런저런거 제외
+	"extends": ["react-app", "eslint:recommended", "prettier"],
+	//룰 추가
+	"env": {
+		"es6": true
+	},
+	"rules": {
+		"no-var": "error", // var 금지
+		"no-multiple-empty-lines": "error", // 여러 줄 공백 금지
+		"no-console": ["warn", { "allow": ["warn", "error", "info"] }], // console.log() 금지
+		"eqeqeq": "error", // 일치 연산자 사용 필수
+		"dot-notation": "error", // 가능하다면 dot notation 사용
+		"no-unused-vars": "error", // 사용하지 않는 변수 금지
+		"@typescript-eslint/no-unused-vars": "off",
+		"@typescript-eslint/consistent-type-definitions": "off",
+		"@typescript-eslint/array-type": "off",
+		"@typescript-eslint/explicit-function-return-type": "off", // return 타입 X
+		"@typescript-eslint/strict-boolean-expressions": "off",
+		"@typescript-eslint/restrict-template-expressions": "off",
+		"@typescript-eslint/no-floating-promises": "off",
+		"@typescript-eslint/consistent-indexed-object-style": "off",
+		"@typescript-eslint/no-misused-promises": "off"
+	}
+}
