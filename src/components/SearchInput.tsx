@@ -16,9 +16,23 @@ function SearchInput() {
 
 	useEffect(() => {
 		const handleSearch = async () => {
-			const result = await getSearchData(debouncedValue);
-			console.log(result);
-			setRecommendWords(result.data);
+			const URL = `http://localhost:4000/sick?q=${debouncedValue}`;
+			const cacheStorage = await caches.open('search');
+			const responsedChache = await cacheStorage.match(URL);
+			try {
+				if (responsedChache) {
+					const cahcedData = await responsedChache.json();
+					setRecommendWords(cahcedData.data);
+				} else {
+					const response = await getSearchData(debouncedValue);
+					console.info('calling api');
+					const clonedResponse = new Response(JSON.stringify(response));
+					await cacheStorage.put(URL, clonedResponse);
+					setRecommendWords(response.data);
+				}
+			} catch (error) {
+				console.log(error);
+			}
 		};
 
 		if (debouncedValue === '') {
