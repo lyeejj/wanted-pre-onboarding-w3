@@ -48,12 +48,14 @@ function SearchInput() {
 		const endIdx = recommendWords.length - 1;
 
 		if (e.key === 'ArrowUp') {
+			if (e.nativeEvent.isComposing) return;
 			setSelectedIdx(selectedIdx > startIdx ? selectedIdx - 1 : endIdx);
 		}
 		if (e.key === 'ArrowDown') {
+			if (e.nativeEvent.isComposing) return;
 			setSelectedIdx(selectedIdx < endIdx ? selectedIdx + 1 : startIdx);
 		}
-		if (e.key === 'Enter') {
+		if (e.key === 'Enter' && selectedIdx !== -1) {
 			setSearchWord(recommendWords[selectedIdx].sickNm);
 			setSelectedIdx(-1);
 		}
