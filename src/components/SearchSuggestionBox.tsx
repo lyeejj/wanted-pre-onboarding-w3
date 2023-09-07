@@ -1,13 +1,26 @@
 import { SearchWordType } from '../types/searchWord';
+import styled from '@emotion/styled';
 
-function SearchSuggestionBox({ list }: { list: any }) {
+interface SearchSuggestionBoxProps {
+	list: SearchWordType[];
+	selectedIdx?: number;
+}
+
+function SearchSuggestionBox({ list, selectedIdx }: SearchSuggestionBoxProps) {
 	const isListEmpty = !list.length;
+
+	console.log(selectedIdx);
+
 	return (
 		<>
 			<p>추천검색어</p>
 			<ul>
 				{!isListEmpty ? (
-					list.map((word: SearchWordType) => <li key={word.sickCd}>{word.sickNm}</li>)
+					list.map((word: SearchWordType, idx: number) => (
+						<RecommendItem key={word.sickCd} className={selectedIdx === idx ? 'selected' : ''}>
+							{word.sickNm}
+						</RecommendItem>
+					))
 				) : (
 					<p>추천검색어가 없습니다.</p>
 				)}
@@ -16,3 +29,14 @@ function SearchSuggestionBox({ list }: { list: any }) {
 	);
 }
 export default SearchSuggestionBox;
+
+const RecommendItem = styled.li`
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	&:hover,
+	&.selected {
+		background-color: #e9e9e9;
+	}
+`;

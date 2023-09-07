@@ -29,7 +29,21 @@ function SearchInput() {
 		handleSearch();
 	}, [debouncedValue]);
 
-	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {};
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		const startIdx = 0;
+		const endIdx = recommendWords.length - 1;
+
+		if (e.key === 'ArrowUp') {
+			setSelectedIdx(selectedIdx > startIdx ? selectedIdx - 1 : endIdx);
+		}
+		if (e.key === 'ArrowDown') {
+			setSelectedIdx(selectedIdx < endIdx ? selectedIdx + 1 : startIdx);
+		}
+		if (e.key === 'Enter') {
+			setSearchWord(recommendWords[selectedIdx].sickNm);
+			setSelectedIdx(-1);
+		}
+	};
 
 	return (
 		<>
@@ -41,7 +55,7 @@ function SearchInput() {
 				onKeyDown={handleKeyDown}
 			/>
 			<button>검색</button>
-			<SearchSuggestionBox list={recommendWords} />
+			<SearchSuggestionBox list={recommendWords} selectedIdx={selectedIdx} />
 		</>
 	);
 }
