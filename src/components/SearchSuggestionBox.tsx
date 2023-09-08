@@ -7,9 +7,7 @@ interface SearchSuggestionBoxProps {
 }
 
 function SearchSuggestionBox({ list, selectedIdx }: SearchSuggestionBoxProps) {
-	const isListEmpty = !list.length;
-
-	console.log(selectedIdx);
+	const isListEmpty = !list?.length;
 
 	return (
 		<>
