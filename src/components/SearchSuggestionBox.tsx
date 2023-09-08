@@ -13,9 +13,9 @@ function SearchSuggestionBox({ list, selectedIdx, showSuggestionBox }: SearchSug
 	return (
 		<>
 			{showSuggestionBox && (
-				<>
-					<p>추천검색어</p>
-					<ul>
+				<SearchListContainer>
+					<SubTitle>추천검색어</SubTitle>
+					<SearchList>
 						{!isListEmpty ? (
 							list.map((word: SearchWordType, idx: number) => (
 								<RecommendItem key={word.sickCd} className={selectedIdx === idx ? 'selected' : ''}>
@@ -23,15 +23,39 @@ function SearchSuggestionBox({ list, selectedIdx, showSuggestionBox }: SearchSug
 								</RecommendItem>
 							))
 						) : (
-							<p>추천검색어가 없습니다.</p>
+							<EmptyList>추천검색어가 없습니다.</EmptyList>
 						)}
-					</ul>
-				</>
+					</SearchList>
+				</SearchListContainer>
 			)}
 		</>
 	);
 }
 export default SearchSuggestionBox;
+
+const SearchListContainer = styled.div`
+	width: 50vw;
+	margin: 0 auto;
+	margin-top: 10px;
+	box-sizing: border-box;
+	padding: 20px;
+	background-color: #fff;
+	border-radius: 20px;
+`;
+
+const SubTitle = styled.p`
+	color: #6a737b;
+	font-size: 13px;
+`;
+
+const SearchList = styled.ul`
+	margin-top: 20px;
+`;
+
+const EmptyList = styled.p`
+	color: #6a737b;
+	margin-top: 20px;
+`;
 
 const RecommendItem = styled.li`
 	padding: 10px;
