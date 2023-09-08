@@ -1,19 +1,24 @@
 import axios from 'axios';
-
-const BASE_URL = 'http://localhost:4000';
+import { getCacheByKey, setCacheByExpireTime } from '../utils/cache';
+import { CACHE_DELETE_TIME, URL } from '../constants/constants';
 
 export const axiosInstance = axios.create({
-	baseURL: BASE_URL,
+	baseURL: URL,
 });
 
-export const getSearchData = async (value: string) => {
+export const getSearchData = async (query: string) => {
 	try {
-		const response = await axiosInstance.get('/sick', {
-			params: {
-				q: value,
-			},
-		});
-		return response;
+		const cacheItem = await getCacheByKey(query);
+
+		if (cacheItem) {
+			return cacheItem;
+		}
+
+		console.info('calling api');
+		const response = await axiosInstance.get(`?q=${query}`);
+
+		setCacheByExpireTime({ key: query, value: response.data, expireTime: CACHE_DELETE_TIME });
+		return response.data;
 	} catch (error: any) {
 		return error.message;
 	}
