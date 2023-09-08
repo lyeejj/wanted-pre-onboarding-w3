@@ -3,12 +3,14 @@ import useDebounce from '../hooks/useDebounce';
 import { getSearchData } from '../api/api';
 import SearchSuggestionBox from './SearchSuggestionBox';
 import { SearchWordType } from '../types/searchWord';
+import { DEBOUNCE_DELAY_TIME, MAX_SEARCH_LIST_NUM } from '../constants/constants';
 
 function SearchInput() {
 	const [searchWord, setSearchWord] = useState('');
 	const [selectedIdx, setSelectedIdx] = useState(-1);
 	const [recommendWords, setRecommendWords] = useState<SearchWordType[]>([]);
-	const debouncedValue = useDebounce(searchWord, 500);
+	const [showSuggestionBox, setShowSuggestionBox] = useState(false);
+	const debouncedValue = useDebounce(searchWord, DEBOUNCE_DELAY_TIME);
 
 	const handleInputChange = (e: any) => {
 		setSearchWord(e.target.value);
@@ -17,7 +19,7 @@ function SearchInput() {
 	useEffect(() => {
 		const axiosSick = async () => {
 			const data = await getSearchData(debouncedValue);
-			setRecommendWords(data);
+			setRecommendWords(data.slice(0, MAX_SEARCH_LIST_NUM));
 		};
 		if (!debouncedValue) {
 			return setRecommendWords([]);
@@ -51,10 +53,16 @@ function SearchInput() {
 				value={searchWord}
 				onChange={handleInputChange}
 				placeholder="질환명을 입력해 주세요."
+				onFocus={() => setShowSuggestionBox(true)}
+				onBlur={() => setShowSuggestionBox(false)}
 				onKeyDown={handleKeyDown}
 			/>
 			<button>검색</button>
-			<SearchSuggestionBox list={recommendWords} selectedIdx={selectedIdx} />
+			<SearchSuggestionBox
+				list={recommendWords}
+				selectedIdx={selectedIdx}
+				showSuggestionBox={showSuggestionBox}
+			/>
 		</>
 	);
 }
